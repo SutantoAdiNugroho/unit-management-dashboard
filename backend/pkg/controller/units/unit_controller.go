@@ -26,7 +26,7 @@ func SetupUnitRoutes(r *gin.RouterGroup, uc *UnitController) {
 	unitGroup.GET("/:unitId", uc.GetDetailUnitByID)
 	unitGroup.DELETE("/:unitId", uc.DeleteUnit)
 	unitGroup.GET("", uc.GetUnits)
-	unitGroup.PUT("/:unitId", uc.GetDetailUnitByID)
+	unitGroup.PUT("/:unitId", uc.UpdateUnit)
 }
 
 func (uc *UnitController) CreateUnit(c *gin.Context) {
@@ -51,13 +51,13 @@ func (uc *UnitController) CreateUnit(c *gin.Context) {
 		return
 	}
 
-	errUnit := uc.unitService.CreateUnit(body)
+	unit, errUnit := uc.unitService.CreateUnit(body)
 	if errUnit != nil {
 		c.Error(handler.NewError(errUnit.Code, errUnit.Message))
 		return
 	}
 
-	c.JSON(http.StatusCreated, dto.BaseResponse(true, "OK", nil))
+	c.JSON(http.StatusCreated, dto.BaseResponse(true, "OK", unit))
 }
 
 func (uc *UnitController) GetDetailUnitByID(c *gin.Context) {
@@ -142,6 +142,5 @@ func (uc *UnitController) UpdateUnit(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, dto.BaseResponse(true, "OK", unit))
-
+	c.JSON(http.StatusOK, dto.BaseResponse(true, "OK", unit))
 }

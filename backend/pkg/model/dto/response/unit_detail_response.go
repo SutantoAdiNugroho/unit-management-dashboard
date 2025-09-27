@@ -8,10 +8,10 @@ import (
 )
 
 type UnitDetailResponse struct {
-	ID     uuid.UUID
-	Name   string
-	Type   enum.UnitType
-	Status enum.UnitStatus
+	ID     uuid.UUID       `json:"id"`
+	Name   string          `json:"name"`
+	Type   enum.UnitType   `json:"type"`
+	Status enum.UnitStatus `json:"status"`
 }
 
 func BuildUnitDetailResponseFromUnit(unit domain.Units) UnitDetailResponse {

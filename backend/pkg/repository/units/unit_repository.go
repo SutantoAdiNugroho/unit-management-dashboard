@@ -6,7 +6,7 @@ import (
 )
 
 type UnitRepository interface {
-	Create(unit domain.Units) error
+	Create(unit domain.Units) (domain.Units, error)
 	GetByID(id string) (domain.Units, error)
 	Delete(unit domain.Units) error
 	FindAll(status, unitType, name string, page, size int) ([]response.UnitDetailResponse, int64, error)

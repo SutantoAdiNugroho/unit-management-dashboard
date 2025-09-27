@@ -17,14 +17,14 @@ func NewUnitRepository(db *gorm.DB) UnitRepository {
 	return &UnitRepositoryImpl{db: db}
 }
 
-func (u *UnitRepositoryImpl) Create(unit domain.Units) error {
-	err := u.db.Create(unit).Error
+func (u *UnitRepositoryImpl) Create(unit domain.Units) (domain.Units, error) {
+	err := u.db.Create(&unit).Error
 	if err != nil {
 		fmt.Printf("failed to create new unit: %v", err)
-		return err
+		return unit, err
 	}
 
-	return nil
+	return unit, nil
 }
 
 func (u *UnitRepositoryImpl) GetByID(id string) (domain.Units, error) {

@@ -21,15 +21,15 @@ type UnitServiceImpl struct {
 func NewUnitService(unitRepository unitrepository.UnitRepository) UnitService {
 	return &UnitServiceImpl{unitRepository: unitRepository}
 }
-func (u *UnitServiceImpl) CreateUnit(request request.CreateUnitDto) *handler.CustomError {
+func (u *UnitServiceImpl) CreateUnit(request request.CreateUnitDto) (*domain.Units, *handler.CustomError) {
 	status, isValidStatus := enum.ParseUnitStatus(request.Status)
 	if !isValidStatus {
-		return handler.NewError(http.StatusBadRequest, "invalid unit status, must be one of 'Available', 'Occupied', 'Cleaning In Progress', 'Maintenance Needed'")
+		return nil, handler.NewError(http.StatusBadRequest, "invalid unit status, must be one of 'Available', 'Occupied', 'Cleaning In Progress', 'Maintenance Needed'")
 	}
 
 	unitType, isValidUnitType := enum.ParseUnitType(request.Type)
 	if !isValidUnitType {
-		return handler.NewError(http.StatusBadRequest, "invalid unit type, must be 'cabin' or 'capsule'")
+		return nil, handler.NewError(http.StatusBadRequest, "invalid unit type, must be 'cabin' or 'capsule'")
 	}
 
 	unit := domain.Units{
@@ -38,12 +38,12 @@ func (u *UnitServiceImpl) CreateUnit(request request.CreateUnitDto) *handler.Cus
 		Type:   unitType,
 	}
 
-	errSave := u.unitRepository.Create(unit)
+	createdUnit, errSave := u.unitRepository.Create(unit)
 	if errSave != nil {
-		return handler.NewError(http.StatusInternalServerError, errSave.Error())
+		return nil, handler.NewError(http.StatusInternalServerError, errSave.Error())
 	}
 
-	return nil
+	return &createdUnit, nil
 }
 
 func (u *UnitServiceImpl) FindByID(id string) (domain.Units, *handler.CustomError) {
@@ -79,7 +79,7 @@ func (u *UnitServiceImpl) DeleteByID(id string) *handler.CustomError {
 
 	errDelete := u.unitRepository.Delete(unit)
 	if errDelete != nil {
-		return handler.NewError(http.StatusInternalServerError, err.Error())
+		return handler.NewError(http.StatusInternalServerError, errDelete.Error())
 	}
 
 	return nil
@@ -121,7 +121,7 @@ func (u *UnitServiceImpl) Update(id string, request request.UpdateUnitDto) (*dom
 
 	errUpdate := u.unitRepository.Update(unit)
 	if errUpdate != nil {
-		return nil, handler.NewError(http.StatusInternalServerError, err.Error())
+		return nil, handler.NewError(http.StatusInternalServerError, errUpdate.Error())
 	}
 
 	return &unit, nil
