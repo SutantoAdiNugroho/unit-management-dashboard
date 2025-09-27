@@ -1,0 +1,2 @@
+ALTER TABLE units
+ADD COLUMN deleted_at DATETIME NULL;

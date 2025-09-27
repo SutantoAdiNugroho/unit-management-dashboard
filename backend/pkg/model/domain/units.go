@@ -13,6 +13,7 @@ type Units struct {
 	Name        string          `gorm:"type:varchar(255)" json:"name"`
 	Type        enum.UnitType   `gorm:"type:enum('capsule', 'cabin')" json:"type"`
 	Status      enum.UnitStatus `gorm:"type:enum('Available', 'Occupied', 'Cleaning In Progress', 'Maintenance Needed')" json:"status"`
+	DeletedAt   gorm.DeletedAt  `gorm:"index" json:"-"`
 	LastUpdated time.Time       `gorm:"autoUpdateTime" json:"lastUpdated"`
 }
 
