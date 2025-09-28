@@ -14,4 +14,4 @@ echo -e "\nrun API tests.."
 make test_api
 
 echo -e "\nshutdown docker compose"
-docker compose down --volumes
+make shutdown

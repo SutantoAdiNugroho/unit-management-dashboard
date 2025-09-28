@@ -29,6 +29,16 @@ func SetupUnitRoutes(r *gin.RouterGroup, uc *UnitController) {
 	unitGroup.PUT("/:unitId", uc.UpdateUnit)
 }
 
+// @Summary Create Unit
+// @Description Create new unit with name, status and type
+// @Tags Units
+// @Accept json
+// @Produce json
+// @Param unit body request.CreateUnitDto true "Unit creation request"
+// @Success 201 {object} dto.Response "Unit created successfully"
+// @Failure 400 {object} dto.Response "Bad request: Missing required fields"
+// @Failure 500 {object} dto.Response "Internal server error"
+// @Router /unit [post]
 func (uc *UnitController) CreateUnit(c *gin.Context) {
 	var body request.CreateUnitDto
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -60,6 +70,15 @@ func (uc *UnitController) CreateUnit(c *gin.Context) {
 	c.JSON(http.StatusCreated, dto.BaseResponse(true, "OK", unit))
 }
 
+// @Summary Get Unit Detail by ID
+// @Description Retrieve details of specific unit using its ID
+// @Tags Units
+// @Produce json
+// @Param unitId path string true "Unit ID"
+// @Success 200 {object} dto.Response "Successfully retrieved unit detail"
+// @Failure 400 {object} dto.Response "Bad request"
+// @Failure 500 {object} dto.Response "Internal server error"
+// @Router /unit/{unitId} [get]
 func (uc *UnitController) GetDetailUnitByID(c *gin.Context) {
 	unitId := c.Param("unitId")
 
@@ -72,6 +91,15 @@ func (uc *UnitController) GetDetailUnitByID(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.BaseResponse(true, "OK", unit))
 }
 
+// @Summary Delete Unit by ID
+// @Description Delete unit using its ID
+// @Tags Units
+// @Produce json
+// @Param unitId path string true "Unit ID"
+// @Success 200 {object} dto.Response "Unit successfully deleted"
+// @Failure 404 {object} dto.Response "Unit not found"
+// @Failure 500 {object} dto.Response "Internal server error"
+// @Router /unit/{unitId} [delete]
 func (uc *UnitController) DeleteUnit(c *gin.Context) {
 	unitId := c.Param("unitId")
 
@@ -84,6 +112,19 @@ func (uc *UnitController) DeleteUnit(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.BaseResponse(true, "OK", nil))
 }
 
+// @Summary Get List of Units
+// @Description Retrieve list of units with optional filtering and pagination
+// @Tags Units
+// @Produce json
+// @Param page query int false "Page number (default 1)"
+// @Param size query int false "Number of items per page (default 10)"
+// @Param name query string false "Filter by unit name"
+// @Param status query string false "Filter by unit status (Available, Occupied)"
+// @Param type query string false "Filter by unit type (capsule, cabin)"
+// @Success 200 {object} dto.Response{data=dto.PaginationResponse} "Successfully retrieved list of units"
+// @Failure 400 {object} dto.Response "Bad request (invalid page/size parameter)"
+// @Failure 500 {object} dto.Response "Internal server error"
+// @Router /unit [get]
 func (uc *UnitController) GetUnits(c *gin.Context) {
 	pageStr := c.DefaultQuery("page", "1")
 	sizeStr := c.DefaultQuery("size", "10")
@@ -112,6 +153,18 @@ func (uc *UnitController) GetUnits(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.BaseResponse(true, "OK", units))
 }
 
+// @Summary Update Unit
+// @Description Update existing units name, status or type.
+// @Tags Units
+// @Accept json
+// @Produce json
+// @Param unitId path string true "Unit ID"
+// @Param unit body request.UpdateUnitDto true "Unit update request"
+// @Success 200 {object} dto.Response "Unit successfully updated"
+// @Failure 400 {object} dto.Response "Bad request (missing required fields or invalid ID)"
+// @Failure 404 {object} dto.Response "Unit not found"
+// @Failure 500 {object} dto.Response "Internal server error"
+// @Router /unit/{unitId} [put]
 func (uc *UnitController) UpdateUnit(c *gin.Context) {
 	unitId := c.Param("unitId")
 

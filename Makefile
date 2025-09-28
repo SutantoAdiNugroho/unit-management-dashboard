@@ -1,7 +1,8 @@
-.PHONY: test test_api init run
+.PHONY: test test_api init run shutdown
 
 init:
 	cd backend && go mod tidy && go mod download
+	cd frontend && npm install
 
 run:
 	docker compose down --volumes

@@ -1,0 +1,227 @@
+basePath: /api
+definitions:
+  dto.PaginationData:
+    properties:
+      page:
+        type: integer
+      size:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  dto.PaginationResponse:
+    properties:
+      content: {}
+      pagination:
+        $ref: '#/definitions/dto.PaginationData'
+    type: object
+  dto.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  request.CreateUnitDto:
+    properties:
+      name:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+    type: object
+  request.UpdateUnitDto:
+    properties:
+      name:
+        type: string
+      status:
+        type: string
+      type:
+        type: string
+    type: object
+host: localhost:5000
+info:
+  contact:
+    email: support@swagger.io
+    name: Sutanto Adi Nugroho
+    url: http://www.swagger.io/support
+  description: API to manage unit including Creation, Edit, View and Delete
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Unit Management API
+  version: "1.0"
+paths:
+  /unit:
+    get:
+      description: Retrieve list of units with optional filtering and pagination
+      parameters:
+      - description: Page number (default 1)
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page (default 10)
+        in: query
+        name: size
+        type: integer
+      - description: Filter by unit name
+        in: query
+        name: name
+        type: string
+      - description: Filter by unit status (Available, Occupied)
+        in: query
+        name: status
+        type: string
+      - description: Filter by unit type (capsule, cabin)
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved list of units
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.PaginationResponse'
+              type: object
+        "400":
+          description: Bad request (invalid page/size parameter)
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Get List of Units
+      tags:
+      - Units
+    post:
+      consumes:
+      - application/json
+      description: Create new unit with name, status and type
+      parameters:
+      - description: Unit creation request
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateUnitDto'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Unit created successfully
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: 'Bad request: Missing required fields'
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create Unit
+      tags:
+      - Units
+  /unit/{unitId}:
+    delete:
+      description: Delete unit using its ID
+      parameters:
+      - description: Unit ID
+        in: path
+        name: unitId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Unit successfully deleted
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "404":
+          description: Unit not found
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Delete Unit by ID
+      tags:
+      - Units
+    get:
+      description: Retrieve details of specific unit using its ID
+      parameters:
+      - description: Unit ID
+        in: path
+        name: unitId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved unit detail
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Get Unit Detail by ID
+      tags:
+      - Units
+    put:
+      consumes:
+      - application/json
+      description: Update existing units name, status or type.
+      parameters:
+      - description: Unit ID
+        in: path
+        name: unitId
+        required: true
+        type: string
+      - description: Unit update request
+        in: body
+        name: unit
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateUnitDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Unit successfully updated
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad request (missing required fields or invalid ID)
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "404":
+          description: Unit not found
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Update Unit
+      tags:
+      - Units
+swagger: "2.0"

@@ -13,8 +13,13 @@ import (
 	unitrepository "unit-management-be/pkg/repository/units"
 	unitservice "unit-management-be/pkg/service/units"
 
+	_ "unit-management-be/docs"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
+	files "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func Run() {
@@ -23,6 +28,9 @@ func Run() {
 
 	allowOrigins := os.Getenv("CORS_ALLOW_ORIGINS")
 	allowMethods := os.Getenv("CORS_ALLOW_METHOD")
+
+	// swagger API
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(files.Handler))
 
 	// cors configuration
 	config := cors.Config{
