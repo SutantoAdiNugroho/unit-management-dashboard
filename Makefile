@@ -8,6 +8,9 @@ run:
 	docker compose build
 	docker compose up -d
 
+shutdown:
+	docker compose down --volumes
+
 logs:
 	docker compose logs -f
 

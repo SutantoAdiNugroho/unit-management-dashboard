@@ -28,7 +28,7 @@ func (u *UnitRepositoryImpl) Create(unit domain.Units) (domain.Units, error) {
 }
 
 func (u *UnitRepositoryImpl) GetByID(id string) (domain.Units, error) {
-	var response domain.Units
+	response := domain.Units{}
 	if err := u.db.Table("units").Where("id = ? AND deleted_at IS NULL", id).First(&response).Error; err != nil {
 		fmt.Printf("failed to get unit by id: %v", err)
 		return response, err
@@ -46,21 +46,21 @@ func (u *UnitRepositoryImpl) Delete(unit domain.Units) error {
 }
 
 func (u *UnitRepositoryImpl) FindAll(status, unitType, name string, page, size int) ([]response.UnitDetailResponse, int64, error) {
-	var units []response.UnitDetailResponse
+	units := make([]response.UnitDetailResponse, 0)
 
 	selectStatement := "units.id AS ID, units.name AS Name, units.type AS Type, units.status AS Status"
 	baseQuery := u.db.Table("units").Select(selectStatement).Where("units.deleted_at IS NULL")
 
 	if !utils.IsEmptyString(status) {
-		baseQuery = baseQuery.Where("events.status = ?", status)
+		baseQuery = baseQuery.Where("units.status = ?", status)
 	}
 
 	if !utils.IsEmptyString(unitType) {
-		baseQuery = baseQuery.Where("events.type = ?", unitType)
+		baseQuery = baseQuery.Where("units.type = ?", unitType)
 	}
 
 	if !utils.IsEmptyString(name) {
-		baseQuery = baseQuery.Where("LOWER(events.name) LIKE LOWER(?)", "%"+name+"%")
+		baseQuery = baseQuery.Where("LOWER(units.name) LIKE LOWER(?)", "%"+name+"%")
 	}
 
 	var total int64

@@ -26,10 +26,27 @@ services:
     environment:
       DB_DSN: "admin:Admin12345!@tcp(mysql:3306)/unit_management?charset=utf8mb4&parseTime=True&loc=Local"
       PORT: "5000"
-      CORS_ALLOW_ORIGINS: "http://example.com,http://localhost:3000"
+      CORS_ALLOW_ORIGINS: "http://example.com,http://127.0.0.1:3000,http://localhost:3000"
       CORS_ALLOW_METHOD: "GET,POST,PUT,DELETE"
     ports:
       - "5000:5000"
+    expose:
+      - 5000
+
+  unit_management_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: unit_management_frontend_next
+    restart: always
+    environment:
+      NEXT_PUBLIC_API_URL: "http://127.0.0.1:5000/api"
+    depends_on:
+      - unit_management_backend
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
 
 volumes:
   mysql_data:
