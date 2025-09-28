@@ -118,3 +118,25 @@ Available services:
 <p>
 After backend service is running properly, you can access the API documentation at `http://localhost:5000/swagger/index.html`
 </p>
+
+## Screenshoots
+1. **List of units**
+   <img width="1860" height="751" alt="Screenshot 2025-09-28 204654" src="https://github.com/user-attachments/assets/fedfcb3d-33fb-4593-af0d-935926074d20" />
+2. **Search units by name**
+   <img width="1858" height="892" alt="Screenshot 2025-09-28 204714" src="https://github.com/user-attachments/assets/c1cc6ddd-3165-4eb9-b360-4497021cf0e2" />
+3. **Create unit**
+
+   Form:
+   <img width="1865" height="934" alt="Screenshot 2025-09-28 204808" src="https://github.com/user-attachments/assets/3a6f7ba2-3618-4d85-8394-40c3f0d783d8" />
+   Success:
+   <img width="1872" height="948" alt="Screenshot 2025-09-28 204824" src="https://github.com/user-attachments/assets/f5928f12-85d5-45e4-9ef1-68bd79a0eea5" />
+
+4. **Edit unit**
+
+   Form:
+   <img width="1861" height="977" alt="Screenshot 2025-09-28 204852" src="https://github.com/user-attachments/assets/ec399b09-6738-4fe2-aac6-975c2e7fd182" />
+   Success:
+   <img width="1868" height="1010" alt="Screenshot 2025-09-28 204932" src="https://github.com/user-attachments/assets/30521625-66a6-48ea-9b77-ce54af26bb94" />
+
+5. **Delete unit**
+   <img width="1866" height="997" alt="Screenshot 2025-09-28 204948" src="https://github.com/user-attachments/assets/f273d8d6-7ab4-4899-8ad2-02e9b6ba8f49" />
