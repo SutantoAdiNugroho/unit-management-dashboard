@@ -1,6 +1,6 @@
 # Unit Management System
 <p>
-Unit Management Dashboard is web-based application for managing unit data (such as capsules and cabins) part of technical test of Bobobox
+Unit Management Dashboard is web-based application for managing unit data (such as capsules and cabins)
 </p>
 
 ## Technologies
